@@ -1074,7 +1074,6 @@ function xhrClient (request) {
                 // succeed fine if found but on fail the error doesn't run
                 // this catches that situation and emulates the xhr.onerror
                 xhr.status = 404;
-                xhr.statusText = 'Local File Request Failed';
                 handler();
             }
         }
