@@ -51,6 +51,18 @@ export default function (request) {
         xhr.timeout = 0;
         xhr.onload = handler;
         xhr.onerror = handler;
-        xhr.send(request.getBody());
+        try {
+          xhr.send(request.getBody());
+        }
+        catch (err) {
+          if (document.location.protocol === 'file:') {
+            // browsers that allow xhr on file: like firefox and fennec
+            // succeed fine if found but on fail the error doesn't run
+            // this catches that situation and emulates the xhr.onerror
+            xhr.status = 404;
+            xhr.statusText = 'Local File Request Failed';
+            handler();
+          }
+        }
     });
 }
